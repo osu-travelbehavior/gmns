@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
+Central Ohio Transit Authority,http://www.cota.com,en,20250901,20260104,2025-SEP-01-BB_20250826
