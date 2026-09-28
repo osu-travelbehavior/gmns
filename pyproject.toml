@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "osu-gmns"
+version = "0.1.0"
+description = "GMNS network merging and connector generation tools"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "shapely<3",
+    "geopy",
+]
+
+[tool.setuptools]
+py-modules = ["osu_gmns"]
+include-package-data = false

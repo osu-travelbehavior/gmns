@@ -2,6 +2,30 @@
 
 This project merges two different networks (e.g., for different modes of transport) or two separate datasets of the same mode into a single, integrated GMNS (General Modeling Network Specification) network.
 
+## Installation and use
+
+The `importable` branch provides these functions as the `osu_gmns` Python module. Install this branch explicitly; the default branch contains the original notebooks.
+
+In a Jupyter notebook (Git must be installed):
+
+```python
+%pip install git+https://github.com/osu-travelbehavior/gmns.git@importable
+```
+
+In a terminal:
+
+```bash
+python -m pip install git+https://github.com/osu-travelbehavior/gmns.git@importable
+```
+
+Then import the functions:
+
+```python
+from osu_gmns import network_update, transfer_connector_builder, network_merge
+```
+
+The distribution name is `osu-gmns`; the Python import name is `osu_gmns`. Python 3.9 or later is required. Restart the notebook kernel after installing or updating the package.
+
 ## 📌 Network Definitions & Recommendations
 Before merging, it is recommended to define your two networks as follows:
 * **Base Network (`base_node_df`, `base_link_df`)**: A highly accessible and dense network, such as a road or pedestrian network. It is recommended to use the primary network containing zone centroids and existing connector information as the base.
@@ -9,7 +33,7 @@ Before merging, it is recommended to define your two networks as follows:
 
 ---
 
-## 1. `network_merge_update.ipynb`
+## 1. `network_update()`
 Prepares the two networks for merging by unifying the node and link ID systems to prevent conflicts, and updates the origin and destination nodes of each link to match the new IDs.
 
 * **Main Function**: `network_update()`
@@ -21,7 +45,7 @@ Prepares the two networks for merging by unifying the node and link ID systems t
 * **How it works**: Reassigns the IDs of the merge network sequentially, starting right after the maximum ID of the base network. (Original IDs are safely preserved in the `old_node_id` and `old_link_id` columns).
 * **Returns**: Four updated DataFrames (`updated_base_node_df`, `updated_merge_node_df`, `updated_base_link_df`, `updated_merge_link_df`).
 
-## 2. `network_merge_connector_generation.ipynb`
+## 2. `transfer_connector_builder()`
 Generates virtual 'transfer connector' links that physically and logically connect the two networks. These connectors allow seamless routing between the different transportation modes.
 
 * **Main Function**: `transfer_connector_builder()`
@@ -33,7 +57,7 @@ Generates virtual 'transfer connector' links that physically and logically conne
 * **How it works**: Uses a cKDTree for spatial searching and the Haversine formula for accurate distance calculation to connect the closest nodes within the specified radius using bidirectional links.
 * **Returns**: A DataFrame containing the generated transfer connector information (`connector_df`).
 
-## 3. `network_merge_final.ipynb`
+## 3. `network_merge()`
 Finally merges the updated networks and the newly generated connector links, sorting the combined network into a Forward Star structure to optimize future shortest-path algorithms.
 
 * **Main Function**: `network_merge()`
@@ -45,3 +69,17 @@ Finally merges the updated networks and the newly generated connector links, sor
     * `merge_link_allowed_uses` (str, default `None`): Specify a string value to batch-overwrite the `allowed_uses` attribute for merge links.
 * **How it works**: Concatenates (`pd.concat`) all nodes and links into a single DataFrame, maps the connector link IDs sequentially, and finally sorts the links in ascending order based on origin and destination nodes (`from_node_id`, `to_node_id`).
 * **Returns**: The final, integrated single network DataFrames (`merged_node_df`, `merged_link_df`).
+
+
+## Original notebooks and zone connectors
+
+The original notebooks remain available alongside the importable module:
+
+- `network_merge_update.ipynb`: node and link renumbering.
+- `network_merge_connector_generation.ipynb`: base-to-merge transfer connectors.
+- `network_merge_final.ipynb`: final network merge.
+- `zone_connector_generation.ipynb`: configurable zone-to-network connectors.
+
+The module also exports `DEFAULT_CONNECTOR_CONFIG`, `process_node_data()`, `generate_connector_links()`, `update_and_merge_links()` and `create_updated_node_df()` from the zone-connector workflow.
+
+See the [GMNS+ tutorial](https://github.com/Kim-yongki/GMNS-tutorial) for a walking-and-transit example using the importable functions.
