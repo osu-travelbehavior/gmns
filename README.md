@@ -71,14 +71,9 @@ Finally merges the updated networks and the newly generated connector links, sor
 * **Returns**: The final, integrated single network DataFrames (`merged_node_df`, `merged_link_df`).
 
 
-## Original notebooks and zone connectors
+## Zone connectors and original examples
 
-The original notebooks remain available alongside the importable module:
-
-- `network_merge_update.ipynb`: node and link renumbering.
-- `network_merge_connector_generation.ipynb`: base-to-merge transfer connectors.
-- `network_merge_final.ipynb`: final network merge.
-- `zone_connector_generation.ipynb`: configurable zone-to-network connectors.
+The original notebook examples are available on the [`main` branch](https://github.com/osu-travelbehavior/gmns/tree/main).
 
 The module also exports `DEFAULT_CONNECTOR_CONFIG`, `process_node_data()`, `generate_connector_links()`, `update_and_merge_links()` and `create_updated_node_df()` from the zone-connector workflow.
 
